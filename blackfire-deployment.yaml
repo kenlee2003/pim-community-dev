@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: blackfire
+  name: blackfire
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: blackfire
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.21.0 (992df58d8)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/pim: "true"
+        io.kompose.service: blackfire
+    spec:
+      containers:
+      - env:
+        - name: BLACKFIRE_SERVER_ID
+          value: server_id
+        - name: BLACKFIRE_SERVER_TOKEN
+          value: server_token
+        image: blackfire/blackfire
+        imagePullPolicy: ""
+        name: blackfire
+        resources: {}
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes: null
+status: {}

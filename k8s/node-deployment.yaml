@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: node
+  name: node
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: node
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.21.0 (992df58d8)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/pim: "true"
+        io.kompose.service: node
+    spec:
+      containers:
+      - env:
+        - name: YARN_CACHE_FOLDER
+          value: /home/node/.yarn
+        image: akeneo/node:12
+        imagePullPolicy: ""
+        name: node
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "250m"
+        volumeMounts:
+        - mountPath: /srv/pim
+          name: node-claim0
+        - mountPath: /home/node/.yarn
+          name: node-claim1
+        workingDir: /srv/pim
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes:
+      - name: node-claim0
+        persistentVolumeClaim:
+          claimName: node-claim0
+      - name: node-claim1
+        persistentVolumeClaim:
+          claimName: node-claim1
+status: {}

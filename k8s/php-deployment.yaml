@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert
+    kompose.version: 1.21.0 (992df58d8)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: php
+  name: php
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: php
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert
+        kompose.version: 1.21.0 (992df58d8)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/pim: "true"
+        io.kompose.service: php
+    spec:
+      containers:
+      - args:
+        - php
+        env:
+        - name: APP_ENV
+          value: prod
+        - name: BLACKFIRE_CLIENT_ID
+          value: client_id
+        - name: BLACKFIRE_CLIENT_TOKEN
+          value: client_token
+        - name: COMPOSER_HOME
+          value: /var/www/.composer
+        - name: PHP_IDE_CONFIG
+          value: serverName=pim-docker-cli
+        - name: XDEBUG_CONFIG
+          value: remote_host=172.17.0.1
+        - name: XDEBUG_ENABLED
+          value: "0"
+        image: akeneo/pim-php-dev:master
+        imagePullPolicy: ""
+        name: php
+        resources:
+          requests:
+            memory: "64Mi"
+            cpu: "250m"
+          limits:
+            memory: "128Mi"
+            cpu: "250m"
+        volumeMounts:
+        - mountPath: /srv/pim
+          name: fpm-claim0
+        - mountPath: /var/www/.composer
+          name: php-claim1
+        workingDir: /srv/pim
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes:
+      - name: fpm-claim0
+        persistentVolumeClaim:
+          claimName: fpm-claim0
+      - name: php-claim1
+        persistentVolumeClaim:
+          claimName: php-claim1
+status: {}
