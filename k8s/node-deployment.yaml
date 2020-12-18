@@ -41,16 +41,16 @@ spec:
             cpu: "250m"
         volumeMounts:
         - mountPath: /srv/pim
-          name: node-claim0
+          name: fpm-claim0
         - mountPath: /home/node/.yarn
           name: node-claim1
         workingDir: /srv/pim
       restartPolicy: Always
       serviceAccountName: ""
       volumes:
-      - name: node-claim0
+      - name: fpm-claim0
         persistentVolumeClaim:
-          claimName: node-claim0
+          claimName: fpm-claim0
       - name: node-claim1
         persistentVolumeClaim:
           claimName: node-claim1

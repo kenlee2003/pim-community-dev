@@ -40,16 +40,16 @@ spec:
             cpu: "250m"
         volumeMounts:
         - mountPath: /srv/pim
-          name: selenium-claim0
+          name: fpm-claim0
           readOnly: true
         - mountPath: /dev/shm
           name: selenium-claim1
       restartPolicy: Always
       serviceAccountName: ""
       volumes:
-      - name: selenium-claim0
+      - name: fpm-claim0
         persistentVolumeClaim:
-          claimName: selenium-claim0
+          claimName: fpm-claim0
           readOnly: true
       - name: selenium-claim1
         persistentVolumeClaim:
