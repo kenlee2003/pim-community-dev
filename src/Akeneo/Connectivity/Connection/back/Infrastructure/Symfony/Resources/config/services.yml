@@ -72,3 +72,8 @@ services:
     akeneo_connectivity.connection.webhook.generate_secret:
         class: Akeneo\Connectivity\Connection\Infrastructure\Webhook\GenerateSecret
 
+    akeneo_connectivity.connection.webhook.cache_clearer:
+        class: Akeneo\Connectivity\Connection\Infrastructure\Webhook\Service\CacheClearer
+        arguments:
+            - '@pim_connector.doctrine.cache_clearer'
+            - '@akeneo.pim.storage_utils.cache.cached_queries_clearer'
